@@ -1,0 +1,1 @@
+Esse projeto é para a criação de uma aplicação de controle para a Empresa JASAssessoria em Segurança do Trabalho, onde será desenvolvido um CRUD com Js para melhor administração dos clientes e serviços.
