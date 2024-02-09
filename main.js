@@ -3,20 +3,10 @@
 const openModal = () => document.getElementById('modal')
     .classList.add('active')
 
-const closeModal = () => document.getElementById('modal')
-    .classList.remove('active')
-
-
-const temporarioCliente = {
-    Empresa: "Mia",
-    Email: "fabi@lino.com.br",
-    Telefone: "11123459789",
-    Contato: "Fabiana",
-    Laudos: "LTCAT",
-    Revisão: "20/01/2025",
-    Treinamentos: "Sem treinamento",
-    Técnico: "Júnior Santos"
-}    
+const closeModal = () => {
+    clearCampos()
+    document.getElementById('modal').classList.remove('active')
+} 
 
 const getLocalStorage = () => JSON.parse(localStorage.getItem('dadosCliente')) ?? []
 const setLocalStorage = (dadosCliente) => localStorage.setItem('dadosCliente', JSON.stringify(dadosCliente))
@@ -48,9 +38,67 @@ const createCliente  = (cliente) => {
     
 }
 
+//Interação com o usuário:
+const camposValidos = () => {
+    return document.getElementById('form').reportValidity()
+}
+
+const clearCampos = () => {
+    const campos = document.querySelectorAll('.modal-campos')
+    campos.forEach(campo => campo.value = "") 
+}
+
+const saveCliente = ()=> {
+    if (camposValidos()){
+        const cliente = {
+        empresa: document.getElementById('empresa').value,
+        email: document.getElementById('email').value,
+        telefone: document.getElementById('telefone').value,
+        contato: document.getElementById('contato').value,
+        laudos: document.getElementById('laudos').value,
+        revisao: document.getElementById('revisao').value,
+        treinamentos: document.getElementById('treinamentos').value,
+        responsavel: document.getElementById('responsavel').value
+        }
+        createCliente(cliente)  
+        closeModal()
+        
+    }
+}
+
+const createLinha = (cliente) => {
+    const newLinha = document.createElement('tr')
+    newLinha.innerHTML = `
+        <td>${cliente.empresa}</td>
+        <td>${cliente.email}</td>
+        <td>${cliente.telefone}</td>
+        <td>${cliente.contato}</td>
+        <td>${cliente.laudos}</td>
+        <td>${cliente.revisao}</td>
+        <td>${cliente.treinamentos}</td>
+        <td>${cliente.responsavel}</td>
+        <td>
+            <button type="button" class="button green">editar</button>
+            <button type="button" class="button red">excluir</button>
+        </td> 
+    `
+    document.querySelector('#tableCliente tbody').appendChild(newLinha)
+}
+
+const carregarDados = () => {
+    const dadosCliente = readCliente()
+    dadosCliente.forEach(createLinha)
+}     
+
+carregarDados()
+
+
 //Eventos:    
 document.getElementById('cadastrarCliente')
     .addEventListener('click', openModal)
 
 document.getElementById('modalClose')
     .addEventListener('click', closeModal)
+
+document.getElementById('salvar')
+    .addEventListener('click', saveCliente)

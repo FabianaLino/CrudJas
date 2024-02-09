@@ -19,22 +19,20 @@
     </header>
     <main>
         <button type="button" class="button blue mobile" id="cadastrarCliente">Cadastrar Cliente</button>
-        <table class="records">
+        <table id="tableCliente" class="records">
             <thead>
                 <tr>
-                    <th>Nome da Empresa</th>
-                    <th>E-mail</th>
-                    <th>Telefone</th>
-                    <th>Contato</th>
-                    <th>Laudos</th>
-                    <th>Data de Revisão</th>
-                    <th>Treinamentos</th>
-                    <th>Técnico Responsável</th>
-                    <th>Ação</th>
+                    <th>empresa</th>
+                    <th>email</th>
+                    <th>telefone</th>
+                    <th>contato</th>
+                    <th>laudos</th>
+                    <th>revisao</th>
+                    <th>treinamentos</th>
+                    <th>responsavel</th>
+                    <th>açao</th>
                 </tr>
-            </thead>
-            <!-- tbody está apenas como exemplo, mas não irá ficar no projeto final-->
-            <!--
+            </thead>                      
             <tbody>
                 <tr>
                     <td>Exemplo Ltda ME</td>
@@ -51,9 +49,7 @@
                     </td>
                 </tr>
                               
-            </tbody>
-        -->
-            
+            </tbody>                    
         </table>
         <div class="modal" id="modal">
             <div class="modal-content">
@@ -61,19 +57,19 @@
                     <h2>Novo Cliente</h2>
                     <span class="modal-close" id="modalClose">&#10006;</span>
                 </header>
-                <form class="modal-form">
-                    <input type="text" class="modal-field" placeholder="Nome da Empresa">
-                    <input type="email" class="modal-field" placeholder="E-mail da Empresa">
-                    <input type="text" class="modal-field" placeholder="Telefone da Empresa">
-                    <input type="text" class="modal-field" placeholder="Contato da Empresa">
-                    <input type="text" class="modal-field" placeholder="Serviços Realizados">
-                    <input type="text" class="modal-field" placeholder="Data de Revisão">
-                    <input type="text" class="modal-field" placeholder="Último Treinamento">
-                    <input type="text" class="modal-field" placeholder="Técnico Responsável">
+                <form id="form" class="modal-form">
+                    <input type="text" id="empresa" class="modal-campos" placeholder="Nome da Empresa" required>
+                    <input type="email" id="email" class="modal-campos" placeholder="E-mail da Empresa" required>
+                    <input type="text" id="telefone" class="modal-campos" placeholder="DDD + Telefone" required>
+                    <input type="text" id="contato" class="modal-campos" placeholder="Contato da Empresa" required>
+                    <input type="text" id="laudos" class="modal-campos" placeholder="Serviços Realizados" required>
+                    <input type="text" id="revisao" class="modal-campos" placeholder="Data de Revisão" required>
+                    <input type="text" id="treinamentos" class="modal-campos" placeholder="Último Treinamento">
+                    <input type="text" id="responsavel" class="modal-campos" placeholder="Técnico Responsável" required>
                 </form>
                 <footer class="modal-footer">
-                    <button class="button green">Salvar</button>
-                    <button class="button blue">Cancelar</button>
+                    <button id="salvar" class= "button green">Salvar</button>
+                    <button id="cancelar" class="button blue">Cancelar</button>
                 </footer>
             </div>
         </div>
