@@ -32,7 +32,7 @@ const updateCliente = (index, cliente) => {
 }
 
 //Delete (Função que irá deletar os dados do cliente):
-const deleteCliente = (cliente) => {
+const deleteCliente = (index) => {
         const dadosCliente = readCliente()
         dadosCliente.splice(index, 1)
         setLocalStorage(dadosCliente)
@@ -61,15 +61,25 @@ const saveCliente = ()=> {
         treinamentos: document.getElementById('treinamentos').value,
         responsavel: document.getElementById('responsavel').value
         }
-        createCliente(cliente)  
-        carregarDados()
-        closeModal()
+        
+        const index = document.getElementById('empresa').dataset.index
+        if (index == 'new') {
+            createCliente(cliente)  
+            carregarDados()
+            closeModal()
+        }
+        else{
+            updateCliente(index, cliente)
+            carregarDados() 
+            closeModal()            
+        }
+        
         
     }
 }
 
 //Cria uma nova linha para baixo, a cada novo cliente cadastrado e traz os dados preenchidos do novo cliente:
-const createLinha = (cliente) => {
+const createLinha = (cliente, index) => {
     const newLinha = document.createElement('tr')
     newLinha.innerHTML = `
         <td>${cliente.empresa}</td>
@@ -81,8 +91,8 @@ const createLinha = (cliente) => {
         <td>${cliente.treinamentos}</td>
         <td>${cliente.responsavel}</td>
         <td> 
-            <button type="button" class="button green" id="edit">Editar</button> 
-            <button type="button" class="button red" id="delete">Excluir</button>
+            <button type="button" class="button green" id="edit-${index}">Editar</button> 
+            <button type="button" class="button red" id="delete${index}">Excluir</button>
         </td> 
     `
     document.querySelector('#tableCliente tbody').appendChild(newLinha)
@@ -99,16 +109,54 @@ const carregarDados = () => {
     dadosCliente.forEach(createLinha)
 }     
 
-carregarDados()
+//Aqui quando eu clicar em editar, ele precissa e trazer os campos para que sejam editados:
+const preencherCampos = (cliente) => {
+    document.getElementById('empresa').value = cliente.empresa
+    document.getElementById('email').value = cliente.email
+    document.getElementById('telefone').value = cliente.telefone
+    document.getElementById('contato').value = cliente.contato
+    document.getElementById('laudos').value = cliente.laudos
+    document.getElementById('revisao').value = cliente.revisao
+    document.getElementById('treinamentos').value = cliente.treinamentos
+    document.getElementById('responsavel').value = cliente.responsavel
+    document.getElementById('empresa').dataset.index = cliente.index
+}
+
+const editCliente = (index) => {
+    const cliente = readCliente()[index]
+    cliente.index = index
+    preencherCampos(cliente)
+    openModal()
+}
+
 
 //Aqui poderia ser adicionado um (data-action) na linha (button) do (td) acima, para destinguir qual botão está sendo chamando.
 //Mas optei por adicionar um id= para cada um deles (id="edit" / id="delete")
 const editarDeletar = (evento) => {
     if (evento.target.type == 'button') {
-        console.log (evento.target.id)
+
+        const [action, index] = evento.target.id.split('-')
+
+        if (action === 'edit') {
+           editCliente (index)
+        }
+        
+        else {
+            const cliente = readCliente()[index]
+            const response = confirm (`Deseja realmente excluir cadastro do cliente ${cliente.empresa}`)
+            if (response) {
+                deleteCliente(index)
+                carregarDados()
+            }
+            
+        }
+            
+        
     }
     
 }
+
+carregarDados()
 
 //Eventos:    
 document.getElementById('cadastrarCliente')
