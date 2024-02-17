@@ -92,7 +92,7 @@ const createLinha = (cliente, index) => {
         <td>${cliente.responsavel}</td>
         <td> 
             <button type="button" class="button green" id="edit-${index}">Editar</button> 
-            <button type="button" class="button red" id="delete${index}">Excluir</button>
+            <button type="button" class="button red" id="delete-${index}">Excluir</button>
         </td> 
     `
     document.querySelector('#tableCliente tbody').appendChild(newLinha)
@@ -137,16 +137,14 @@ const editarDeletar = (evento) => {
 
         const [action, index] = evento.target.id.split('-')
 
-        if (action === 'edit') {
+        if (action == 'edit') {
            editCliente (index)
-        }
-        
-        else {
+        } else {
             const cliente = readCliente()[index]
-            const response = confirm (`Deseja realmente excluir cadastro do cliente ${cliente.empresa}`)
+            const response = confirm (`Deseja realmente excluir cadastro do cliente? ${cliente.empresa}`)
             if (response) {
-                deleteCliente(index)
-                carregarDados()
+               deleteCliente(index)
+               carregarDados()
             }
             
         }
