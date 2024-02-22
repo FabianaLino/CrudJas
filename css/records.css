@@ -13,7 +13,7 @@
 }
 .records td{
     height: 50px;
-    padding-left: 20px;
+    padding: 10px;
 }
 
 .records th:last-child,

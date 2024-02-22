@@ -69,26 +69,33 @@ const saveCliente = () => {
     }
 };
 
-//Calcula quantos dias falta para revisão: 9NÃO ESTÁ FUNCIONANDO CORRETAMENTE)
-const calcularDiferencaDias = (data) => {
-    const umDiaEmMilissegundos = 24 * 60 * 60 * 1000;
-    const dataRevisao = new Date(data);
-    const dataAtual = new Date();
-    const diferencaMilissegundos = dataRevisao.getTime() - dataAtual.getTime();
-    return Math.ceil(diferencaMilissegundos / umDiaEmMilissegundos); //Math.ceil para arredondar para cima, considerando que 0 dias de diferença significa que a revisão é hoje
-};
-
-
 // Cria uma nova linha para baixo, a cada novo cliente cadastrado e traz os dados preenchidos do novo cliente:
 const createLinha = (cliente, index) => {
     const newLinha = document.createElement('tr');
+    // Convertendo a data de revisão para objeto de data JavaScript (formato brasileiro)
+    const [dia, mes, ano] = cliente.revisao.split('/').map(Number);
+    const revisaoDate = new Date(ano, mes - 1, dia); // Mês é indexado em 0, então subtrai 1
+    const hoje = new Date();
+    const diffTime = revisaoDate.getTime() - hoje.getTime();
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)); // Usando Math.floor para arredondar para baixo
+    let corFundo = '';
+    console.log('Data de Revisão:', cliente.revisao);
+    console.log('Data de Revisão (convertida):', revisaoDate); // Adicionando log para depuração
+    console.log('Hoje:', hoje);
+    console.log('Diferença em Dias:', diffDays);
+    if (diffDays <= 30 && diffDays >= 0) {
+        corFundo = '#FFFF33'; // Define a cor como amarelo se a revisão estiver dentro dos 30 dias
+    } else if (diffDays < 0) {
+        corFundo = '#FF2222'; // Define a cor como vermelho se a revisão estiver vencida
+    }
+    console.log('Cor de Fundo:', corFundo);
     newLinha.innerHTML = `
         <td>${cliente.empresa}</td>
         <td>${cliente.email}</td>
         <td>${cliente.telefone}</td>
         <td>${cliente.contato}</td>
         <td>${cliente.laudos}</td>
-        <td>${cliente.revisao}</td>
+        <td style="background-color: ${corFundo}">${cliente.revisao}</td>
         <td>${cliente.treinamentos}</td>
         <td>${cliente.responsavel}</td>
         <td> 
@@ -96,14 +103,6 @@ const createLinha = (cliente, index) => {
             <button type="button" class="button red" id="delete-${index}">Excluir</button>
         </td> 
     `;
-
-    const diffDias = calcularDiferencaDias(cliente.revisao);
-    if (diffDias <= 0) {
-        newLinha.classList.add('data-vencida');
-    } else if (diffDias <= 30) {
-        newLinha.classList.add('data-proxima-revisao');
-    }
-
     document.querySelector('#tableCliente tbody').appendChild(newLinha);
 };
 
@@ -112,22 +111,20 @@ const clearTable = () => {
     linhas.forEach(linha => linha.parentNode.removeChild(linha));
 };
 
-//Ordenação do cadastro: (NÃO ESTÁ FUNCIONANDO CORRETAMENTE)
 const sortClientes = () => {
     const dadosCliente = readCliente();
     dadosCliente.sort((a, b) => {
-        const diffA = calcularDiferencaDias(a.revisao);
-        const diffB = calcularDiferencaDias(b.revisao);
-
-        if (diffA === diffB) {
-            // Se as datas de revisão forem iguais, ordenamos pelos nomes das empresas
-            return a.empresa.localeCompare(b.empresa);
-        } else {
-            // Ordenamos por data de revisão mais próxima ou vencida
-            return diffA - diffB;
-        }
+        // Primeiro ordena pelo nome da empresa
+        const empresaComparison = a.empresa.localeCompare(b.empresa);
+        if (empresaComparison !== 0) return empresaComparison;
+        
+        // Se as empresas forem diferentes, retorna a comparação alfabética
+        // Caso contrário, ordena pela data de revisão mais próxima ou vencida
+        const dateA = new Date(a.revisao);
+        const dateB = new Date(b.revisao);
+        return dateA - dateB;
     });
-    setLocalStorage(dadosCliente);
+    setLocalStorage(dadosCliente); // Atualiza a posição no localStorage após a ordenação
     return dadosCliente;
 };
 
@@ -135,7 +132,6 @@ const carregarDados = () => {
     const dadosCliente = sortClientes();
     clearTable();
     dadosCliente.forEach(createLinha);
-    mudarCorDataRevisao(); // Adiciona esta linha para atualizar as cores das datas de revisão
 };     
 
 // Aqui quando eu clicar em editar, ele precisa trazer os campos para que sejam editados:
@@ -190,4 +186,4 @@ document.getElementById('salvar')
     .addEventListener('click', saveCliente);
 
 document.querySelector('#tableCliente tbody')
-    .addEventListener('click', editarDeletar);;
+    .addEventListener('click', editarDeletar);

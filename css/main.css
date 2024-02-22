@@ -52,14 +52,6 @@ footer{
     padding: 20px;
 }
 
-.linha-vencida {
-    background-color: #f30c0c; /* Vermelho claro para indicar que está vencido */
-}
-
-.linha-proxima-revisao {
-    background-color: #eeee0a; /* Amarelo claro para indicar que está próximo da revisão */
-}
-
 @media (max-width:480px){
     header{
         position:fixed;
