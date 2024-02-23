@@ -4,7 +4,9 @@
 
 ## Segue abaixo layout da aplicação:
 
-(Em construção)
+![Alt text](layout1.PNG)
+![Alt text](layout2.PNG)
+![Alt text](layout3.PNG)
 
 ## Projeto criado por:
 
