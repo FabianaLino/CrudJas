@@ -1,6 +1,8 @@
-# CRUD - Para cadastro de clientes
+# CRUD - Para cadastro de clientes e serviços.
 
-#### Esse projeto é para a criação de uma aplicação de controle para a Empresa JASAssessoria em Segurança do Trabalho, onde será desenvolvido um CRUD com Js para melhor administração dos clientes e serviços.
+#### Projeto desenvolvido para controle de clientes e serviços da Empresa (JAS Assessoria em Segurança do Trabalho).
+
+##### A proposta foi desenvolver um CRUD utilizando as tecnologias HTML, CSS e JavaScript, com isso proporcionar uma melhor administração dos clientes e serviços realizados.
 
 ## Segue abaixo layout da aplicação:
 
